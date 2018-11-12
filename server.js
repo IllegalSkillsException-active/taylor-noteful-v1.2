@@ -6,8 +6,6 @@ const data = require('./db/notes');
 const app = express();
 
 
-// ADD STATIC SERVER HERE
-
 app.listen(8080, function () {
   console.info(`Server listening on ${this.address().port}`);
 }).on('error', err => {
@@ -15,7 +13,17 @@ app.listen(8080, function () {
 });
 
 app.get('/api/notes', (req, res) => {
-    res.json(data);
+   const search = req.query.search; 
+
+   if(search){
+     const searchData = data.filter((item)=>item.title.includes(search))
+     res.json(searchData);
+   }
+
+  
+  else{
+  res.json(data);
+  }
   });
 
   app.get('/api/notes/:id',(req, res)=> {
@@ -25,4 +33,4 @@ app.get('/api/notes', (req, res) => {
   });
 console.log('Hello Noteful!');
 
-// INSERT EXPRESS APP CODE HERE...
+
