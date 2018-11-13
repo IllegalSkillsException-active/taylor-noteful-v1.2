@@ -3,7 +3,7 @@
 // Load array of notes
 const express = require('express'); 
 const data = require('./db/notes');
-const simDB = require('../db/simDB');
+const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
 
 const app = express();
@@ -15,23 +15,24 @@ const { logger } = require('./middleware/logger');
 
 app.use(logger); 
 app.get('/api/notes', (req, res) => {
-   const search = req.query.search; 
+  const { searchTerm } = req.query;
 
-   if(search){
-     const searchData = data.filter((item)=>item.title.includes(search))
-     res.json(searchData);
-   }
-
-  
-  else{
-  res.json(data);
-  }
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); // responds with filtered array
   });
+});
  
   app.get('/api/notes/:id',(req, res)=> {
     const id = req.params.id; 
-    let note = data.find(item=>item.id === Number(id));  
-    res.json(note); 
+    notes.find(id, (err, list)=> {
+      if(err){
+        return next(err); 
+      }
+      res.json(list); 
+    });
   });
 console.log('Hello Noteful!');
 
