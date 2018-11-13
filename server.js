@@ -4,14 +4,14 @@
 const express = require('express'); 
 const data = require('./db/notes');
 const app = express();
-
-
-app.listen(8080, function () {
-  console.info(`Server listening on ${this.address().port}`);
+const { PORT } = require('./config');
+const { logger } = require('./middleware/logger'); 
+app.listen(PORT, function () {
+  console.info(`Server listening on  ${PORT}`);
 }).on('error', err => {
   console.error(err);
 });
-
+app.use(logger); 
 app.get('/api/notes', (req, res) => {
    const search = req.query.search; 
 
