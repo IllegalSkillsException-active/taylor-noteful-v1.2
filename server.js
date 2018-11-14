@@ -7,7 +7,7 @@ const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
 const { PORT } = require('./config');
 const { logger } = require('./middleware/logger');
-
+hi
 const app = express();
 
 app.use(logger); 
