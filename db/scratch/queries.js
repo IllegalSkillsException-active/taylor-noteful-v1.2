@@ -1,5 +1,5 @@
-const data = require('../db/notes');
-const simDB = require('../db/simDB');
+const data = require('./db/notes');
+const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
 
 // GET Notes with search
