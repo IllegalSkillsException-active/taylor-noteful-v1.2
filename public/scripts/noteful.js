@@ -24,7 +24,6 @@ const noteful = (function () {
     </li>`);
     return listItems.join('');
   }
-
   /**
    * HELPERS
    */
@@ -32,7 +31,6 @@ const noteful = (function () {
     const id = $(item).closest('.js-note-element').data('id');
     return id;
   }
-
   /**
    * EVENT LISTENERS AND HANDLERS
    */
@@ -63,7 +61,6 @@ const noteful = (function () {
         store.notes = searchResponse;
         render();
       });
-
     });
   }
 
@@ -103,7 +100,6 @@ const noteful = (function () {
             store.notes = searchResponse;
             render();
           });
-
         });
       }
 

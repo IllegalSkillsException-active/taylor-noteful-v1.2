@@ -28,7 +28,6 @@ const api = {
       contentType: 'application/json',
       dataType: 'json',
       data: JSON.stringify(obj),
-
     });
   },
 
