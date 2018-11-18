@@ -77,16 +77,64 @@ describe('Get request "/api/notes"', function(){
     });
 
     it('should respond with 404 error for invalid target id', function(){
-        // const newObject={
-        //     'title':'mad max screams anarchy', 
-        //     'content':'witness me!!!!'
-        // };
+        
         return chai.request(app)
         .get('/api/notes/DOESNOTEXIST')
         .catch(err => err.response)
         .then(res => {
             expect(res).to.have.status(404);
-        });
+            expect(res.body).to.be.a('object');
+            expect(res.body).to.include.keys('message');
+        })
+        .catch(err =>err.response);
     });
 });
+
+describe('POST "api/notes"', function(){
+    it('should create a new item when provided the correct data', function(){
+        const newObject = {
+            title:'mad max screams anarchy', 
+            content:'witness me!!!!'
+        };
+        return chai.request(app)
+        .post('/api/notes')
+        .send(newObject)
+        .then((res) =>{
+            expect(res).to.have.status(201);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a('object');
+            expect(res.body).to.include.keys('id', 'title', 'content');
+            expect(res.body).to.deep.equal(
+                Object.assign(newObject, { id: res.body.id })
+              );
+        });
+    });
+
+    it('should respond with "Missing title in request body" when missing title', function(){
+        const missingTitle = {
+            content:'witness me!!!'
+        }
+        return chai.request(app)
+        .post('/api/notes')
+        .send(missingTitle)
+        .then((res)=>{
+            expect(res).to.have.status(404);
+            expect(res).to.be.json; 
+            expect(res.body).to.be.a('object');
+            expect(res.body).to.include.keys('message'); 
+            expect(res.body.message).to.eq('Missing `title` in request body');
+        })
+        .catch(err => err.response); 
+    })
+});
+describe('DELETE /api/notes/:id', function()  {
+    it('should delete recipes on DELETE', () => {
+      return chai
+        .request(app) 
+        .delete('/api/notes/1001')
+        .then(res => {
+          expect(res).to.have.status(204);
+        });
+    });
+}); 
     
