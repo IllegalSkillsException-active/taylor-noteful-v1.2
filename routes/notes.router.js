@@ -17,7 +17,14 @@ const notes = simDB.initialize(data);
   router.get('/:id',(req, res, next)=>{
     const id = Number(req.params.id); 
     notes.find(id)
-    .then(item => res.json(item))
+    .then(item =>{
+      if(item){
+         res.json(item);
+      }
+      else{
+        next(); 
+      }
+    })
     .catch(err => next(err)); 
   });
     
